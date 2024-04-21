@@ -1,0 +1,23 @@
+---
+// Components
+import Head from "./Head.astro";
+
+// Styles
+import "@styles/main.css";
+---
+
+<html lang="en">
+  <Head {...Astro.props} />
+  <body>
+    <div id="root">
+      <slot />
+    </div>
+    <style>
+      #root {
+        /** TEMP  */
+        padding-block: 100px;
+      }
+    </style>
+    <script src="../scripts/global.js"></script>
+  </body>
+</html>

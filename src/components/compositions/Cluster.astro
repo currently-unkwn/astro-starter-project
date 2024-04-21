@@ -1,0 +1,82 @@
+---
+type spaceOptions =
+  | "space-0"
+  | "space-1"
+  | "space-2"
+  | "space-3"
+  | "space-4"
+  | "space-5"
+  | "space-6"
+  | "space-7";
+
+type justifyOptions =
+  | "normal"
+  | "start"
+  | "end"
+  | "center"
+  | "between"
+  | "around"
+  | "evenly"
+  | "stretch";
+
+type alignOptions = "start" | "end" | "center" | "baseline" | "stretch";
+
+interface PropObject {
+  default?: string;
+  tablet?: string;
+  laptop?: string;
+  desktop?: string;
+}
+
+interface Props {
+  tagName?: "section" | "div" | "ul";
+  space?: PropObject | spaceOptions;
+  justify?: PropObject | justifyOptions;
+  alignItems?: PropObject | alignOptions;
+  class?: string;
+  isCenterMiddle?: boolean;
+  [key: string]: any;
+}
+
+const {
+  tagName = "div",
+  space = "space-4",
+  justify = "start",
+  alignItems = "stretch",
+  isCenterMiddle = false,
+  class: classList,
+  ...rest
+} = Astro.props as Props;
+
+const Tag = tagName;
+---
+
+<Tag
+  class:list={[
+    "cluster",
+    classList,
+    { ["gap-" + space]: space },
+    { ["justify-" + justify]: justify },
+    { ["items-" + alignItems]: alignItems },
+    { "center-middle": isCenterMiddle },
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style is:global>
+  /* 
+  * TODO: Test fluid gap
+   */
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .cluster.center-middle > :first-child,
+  .cluster.center-middle > :last-child {
+    flex: 1;
+  }
+</style>
